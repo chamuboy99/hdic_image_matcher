@@ -1,0 +1,67 @@
+QWidget {
+    background-color: #000000ff;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+}
+
+QLabel {
+    font-size: 20px;
+    padding: 10px;
+}
+
+QPushButton {
+    background-color: #E8533C;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+QPushButton:hover {
+    background-color: #E63117;
+}
+
+QPushButton:checked {
+    background-color: #4FC44F;
+    border: none;
+}
+
+QPushButton:checked:hover {
+    background-color: #1EB01E;
+    border: none;
+}
+
+QPushButton#Quit {
+    background-color: #BABABA;
+    border: none;
+}
+
+QPushButton#Upload_Victim {
+    background-color: #BABABA;
+    border: none;
+}
+
+QPushButton#Upload_Victim:hover {
+    background-color: #999999;
+    border: none;
+}
+
+QPushButton#Upload_Multiple_Victims {
+    background-color: #BABABA;
+    border: none;
+}
+
+QPushButton#Upload_Multiple_Victims:hover {
+    background-color: #999999;
+    border: none;
+}
+
+QPushButton#Quit:hover {
+    background-color: #999999;
+}
+
+#ResultLabel {
+    color: #aaaaaa;
+    font-size: 16px;
+}
