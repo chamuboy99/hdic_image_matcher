@@ -16,9 +16,6 @@ np.random.seed(42)
 projection_matrix = np.random.randn(DIM_ORIG, DIM_HV)
 
 def encode_embedding_to_hv(embedding):
-    """
-    Projects 512D embedding to 10,000D hypervector using random projection and binarization.
-    """
     projected = np.dot(embedding, projection_matrix)  # shape: (10000,)
     hypervector = (projected > 0).astype(np.uint8)     # Binary HV (0 or 1)
     return hypervector

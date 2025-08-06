@@ -8,6 +8,7 @@ QWidget {
 QLabel {
     font-size: 20px;
     padding: 10px;
+    font-weight:bold;
 }
 
 QPushButton {
@@ -16,6 +17,7 @@ QPushButton {
     border: none;
     padding: 8px 16px;
     font-size: 14px;
+    font-weight:bold;
 }
 
 QPushButton:hover {
@@ -32,14 +34,30 @@ QPushButton:checked:hover {
     border: none;
 }
 
+QPushButton#View_Detection_Logs {
+    background-color: #BABABA;
+    border: none;
+    font-weight:bold;
+}
+
+QPushButton#View_Detection_Logs:hover {
+    background-color: #999999;
+}
+
 QPushButton#Quit {
     background-color: #BABABA;
     border: none;
+    font-weight:bold;
+}
+
+QPushButton#Quit:hover {
+    background-color: #999999;
 }
 
 QPushButton#Upload_Victim {
     background-color: #BABABA;
     border: none;
+    font-weight:bold;
 }
 
 QPushButton#Upload_Victim:hover {
@@ -50,15 +68,12 @@ QPushButton#Upload_Victim:hover {
 QPushButton#Upload_Multiple_Victims {
     background-color: #BABABA;
     border: none;
+    font-weight:bold;
 }
 
 QPushButton#Upload_Multiple_Victims:hover {
     background-color: #999999;
     border: none;
-}
-
-QPushButton#Quit:hover {
-    background-color: #999999;
 }
 
 #ResultLabel {

@@ -1,12 +1,13 @@
 from PyQt5.QtWidgets import QApplication,QMessageBox, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
 import sys
 from pathlib import Path
-
+from PyQt5.QtGui import QIcon
 
 class PreviewUI(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("HDIC Matcher")
+        self.setWindowIcon(QIcon("assets/app_icon.ico"))
         self.resize(650, 650)
 
         self.image_label = QLabel()

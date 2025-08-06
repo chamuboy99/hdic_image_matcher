@@ -1,12 +1,18 @@
 #matcher.py
 
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+import tensorflow as tf
+tf.get_logger().setLevel('ERROR')
+
 import numpy as np
 import json
-from keras_facenet import FaceNet
 from tqdm import tqdm
 from scipy.spatial.distance import hamming
 import glob
+from facenet_embedder import embedder
 
 # Import your alignment + cropping function from preprocessing module
 from MTCNN_preprocess_gpu import align_and_crop_face
@@ -16,14 +22,7 @@ CLASS_HV_DIR = 'class_hypervectors'
 HV_DIM = 10000
 projection_matrix = np.random.RandomState(42).randn(512, HV_DIM)
 
-# Initialize FaceNet embedder once
-embedder = FaceNet()
-
 def preprocess_image(image_path):
-    """
-    Preprocess image by performing alignment and cropping using imported function.
-    Returns aligned RGB face resized to 160x160.
-    """
     face = align_and_crop_face(image_path)  # Must return RGB 160x160 numpy array or None
     if face is None:
         raise ValueError(f"Face alignment and cropping failed for {image_path}")
@@ -53,6 +52,28 @@ def load_class_hypervectors():
     class_hv_matrix = np.stack(class_hv_list)  # shape: (num_classes, HV_DIM // 8)
     return person_ids, class_hv_matrix
 
+# Load class hypervectors once globally
+person_ids, class_hv_matrix = load_class_hypervectors()
+
+def match_hv_to_class(query_hv, class_hv_matrix, person_ids):
+    try:
+        if len(class_hv_matrix) == 0 or len(person_ids) == 0:
+            raise ValueError("No class hypervectors or labels provided.")
+
+        query_packed = np.packbits(query_hv.astype(np.uint8))
+        xor_result = np.bitwise_xor(class_hv_matrix, query_packed)
+        hamming_dist = np.sum(np.unpackbits(xor_result, axis=1), axis=1) / HV_DIM
+        similarities = 1 - hamming_dist
+
+        best_idx = np.argmax(similarities)
+        best_score = similarities[best_idx]
+        best_label = person_ids[best_idx]
+
+        return best_label, best_score
+    except Exception as e:
+        print(f"❌ Error in match_hv_to_class: {e}")
+        return None, None
+
 def classify(query_image_path, person_ids, class_hv_matrix, top_k=1):
     try:
         embedding = get_embedding(query_image_path)
@@ -81,7 +102,7 @@ def main():
                   glob.glob('images/test_faces/*.webp')
 
     for image_path in tqdm(test_images, desc="Classifying test images"):
-        top_matches = classify(image_path, person_ids, class_hv_matrix, top_k=3)
+        top_matches = classify(image_path, person_ids, class_hv_matrix, top_k=2)
         print(f"\n📷 Query: {os.path.basename(image_path)}")
         for person_id, score in top_matches:
             print(f" → Match: {person_id}, Similarity: {score:.4f}")

@@ -1,0 +1,4 @@
+2025-08-04 17:47:55,416:INFO:Loading weights.
+2025-08-04 17:47:55,417:INFO:Looking for C:\Users\chamu/.keras-facenet\20180402-114759\20180402-114759-weights.h5
+2025-08-04 17:48:35,180:INFO:Skipped blurry image (Laplacian variance=27.99)
+2025-08-04 17:48:35,250:INFO:Skipped blurry image (Laplacian variance=27.99)
